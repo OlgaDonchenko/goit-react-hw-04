@@ -1,5 +1,5 @@
 import axios from "axios";
-// import { perPage } from "./components/App/App";
+
 axios.defaults.baseURL = "https://api.unsplash.com/";
 const API_KEY = "QFHtF_jB1XddBPCXNzRt9Lx9WIqL3MYsBWr77V6XOsI";
 
@@ -9,7 +9,6 @@ export async function findImage(inputValue, page) {
       query: inputValue,
       page: page,
       per_page: 18,
-      orientation: "landscape",
     },
   });
   return response.data;

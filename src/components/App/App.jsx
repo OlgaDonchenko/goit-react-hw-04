@@ -1,30 +1,16 @@
 import { findImage } from "../../searcher-api";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import ImageGallery from "../ImageGallery/ImageGallery";
 import ImageModal from "../ImageModal/ImageModal";
 import SearchBar from "../SearchBar/SearchBar";
-import LoadMoreBtn from "../LoadMoreBtn/LoadMoreBtn";
-import Loader from "../Loader/Loader";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
-import { findImage } from "../../searcher-api";
 
 export default function App() {
   const [images, setImages] = useState([]);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedImageUrl, setSelectedImageUrl] = useState("");
-  const [error, setError] = useState(false);
   const [searchResults, setSearchResults] = useState([]);
   const [searchError, setSearchError] = useState(null);
-
-  const openModal = (imageUrl) => {
-    setSelectedImageUrl(imageUrl);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setSelectedImageUrl("");
-    setIsModalOpen(false);
-  };
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     async function getImages() {
@@ -33,6 +19,7 @@ export default function App() {
     }
     getImages();
   }, []);
+
   const performSearch = async (query) => {
     try {
       const data = await findImage(query);
@@ -43,6 +30,20 @@ export default function App() {
       setSearchResults([]);
     }
   };
+  const getImages = async () => {
+    const data = await findImage(inputValue, page);
+    setImages(data);
+  };
+
+  const openModal = (imageUrl) => {
+    setSelectedImageUrl(imageUrl);
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setSelectedImageUrl("");
+    setModalIsOpen(false);
+  };
 
   return (
     <>
@@ -51,7 +52,7 @@ export default function App() {
 
       {searchError && <ErrorMessage error={searchError} />}
       <ImageGallery items={searchResults} openModal={openModal} />
-      {isModalOpen && (
+      {modalIsOpen && (
         <ImageModal imageUrl={selectedImageUrl} closeModal={closeModal} />
       )}
     </>
