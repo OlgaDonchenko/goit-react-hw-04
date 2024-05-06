@@ -2,7 +2,6 @@
 import { CiSearch } from "react-icons/ci";
 import { Field, Form, Formik } from "formik";
 import toast from "react-hot-toast";
-
 import css from "./SearchBar.module.css";
 
 export default function SearchBar({ onSearch }) {
@@ -11,7 +10,7 @@ export default function SearchBar({ onSearch }) {
     if (!searchTerm) {
       toast.error("Please enter a search term!");
     } else {
-      onSearch(searchTerm);
+      onSearch(searchTerm.values);
     }
     actions.resetForm();
   };
